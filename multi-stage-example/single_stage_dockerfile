@@ -1,0 +1,15 @@
+# Stage 1: Build the application
+FROM openjdk:8-jdk-alpine AS builder
+WORKDIR /app/source
+
+# Install bash & required tools (optional but sometimes needed by scripts)
+RUN apk add --no-cache bash
+
+# Copy all project files into the builder stage
+COPY . .
+
+# Ensure the wrapper is executable (important if using ./mvnw)
+RUN chmod +x mvnw
+
+# Build the JAR file
+RUN ./mvnw clean package -DskipTests
